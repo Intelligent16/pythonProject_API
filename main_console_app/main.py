@@ -26,6 +26,7 @@ def get_comand():
 
 
 # comment
+# comment 2
 
 while True:
     print_all_comands()
