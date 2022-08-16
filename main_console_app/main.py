@@ -25,7 +25,7 @@ def get_comand():
             return int(comand)
 
 
-
+# comment
 
 while True:
     print_all_comands()
