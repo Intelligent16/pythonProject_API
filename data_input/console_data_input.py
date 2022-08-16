@@ -11,7 +11,7 @@ def get_avtoriz_data():
     return login, password
 
 def transfer_to_card():
-    transfer_summ = float(input("Введите сумму для перевода\n"))
+    transfer_summ = check_transfer_summ()
     from_card = get_number_card("Вашей")
     to_card = get_number_card("другой")
     all_numbers_cards[from_card]["balance"] = all_numbers_cards[from_card]["balance"] - transfer_summ
@@ -23,3 +23,11 @@ def get_number_card(message):
         number_card = input()
         if number_card != "":
             return number_card
+
+def check_transfer_summ():
+    while True:
+        print("Введите сумму для перевода")
+        transfer_summ = input()
+        if transfer_summ.replace('.','',1).replace(',','',1).isdigit():
+            transfer_summ = float(transfer_summ)
+            return transfer_summ
