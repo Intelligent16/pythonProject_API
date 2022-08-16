@@ -1,4 +1,4 @@
-
+from main_console_app.data_base import all_numbers_cards
 
 
 def get_avtoriz_data():
@@ -10,5 +10,11 @@ def get_avtoriz_data():
 
     return login, password
 
+def transfer_to_card():
+    transfer_summ = float(input())
+    from_card = input()
+    to_card = input()
+    all_numbers_cards[from_card]["balance"] = all_numbers_cards[from_card]["balance"] - transfer_summ
+    all_numbers_cards[to_card]["balance"] = all_numbers_cards[to_card]["balance"] + transfer_summ
 
 

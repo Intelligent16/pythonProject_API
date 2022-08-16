@@ -2,6 +2,7 @@
 
 from data_output.console_data_output import avtorization, print_current_user, exit_user, registration, \
     create_card, print_all_card_info, print_all_card_user
+from data_input.console_data_input import transfer_to_card
 
 
 def print_all_comands():
@@ -45,6 +46,8 @@ while True:
         print_all_card_info()
     elif comand == 7:
         print_all_card_user()
+    elif comand == 8:
+        transfer_to_card()
     elif comand == 0:
         break
 
@@ -64,4 +67,3 @@ while True:
 # Базовые команды Гита через Пайчарм 1
 #
 #
-
