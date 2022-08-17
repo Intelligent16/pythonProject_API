@@ -13,7 +13,8 @@ def get_avtoriz_data():
 def transfer_to_card():
     transfer_summ = check_transfer_summ()
     from_card = get_number_card("Вашей")
-    to_card = get_number_card("другой")    all_tax = tax_of_transfer(transfer_summ)
+    to_card = get_number_card("другой")
+    all_tax = tax_of_transfer(transfer_summ)
     if transfer_summ + all_tax <= all_numbers_cards[from_card]["balance"]:
         all_numbers_cards[from_card]["balance"] = all_numbers_cards[from_card]["balance"] - transfer_summ - all_tax
         all_numbers_cards[to_card]["balance"] = all_numbers_cards[to_card]["balance"] + transfer_summ
