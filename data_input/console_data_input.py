@@ -1,5 +1,4 @@
-from main_console_app.data_base import all_numbers_cards
-
+from main_console_app.data_base import all_numbers_cards, history_transactions, status_success, status_failed
 
 def get_avtoriz_data():
     print("Укажите Ваш логин и пароль")
@@ -18,8 +17,16 @@ def transfer_to_card():
     if transfer_summ + all_tax <= all_numbers_cards[from_card]["balance"]:
         all_numbers_cards[from_card]["balance"] = all_numbers_cards[from_card]["balance"] - transfer_summ - all_tax
         all_numbers_cards[to_card]["balance"] = all_numbers_cards[to_card]["balance"] + transfer_summ
+        add_transaction_to_history(all_tax, from_card, to_card, transfer_summ, status_success)
     else:
         print("Недостаточно средств")
+        add_transaction_to_history(all_tax, from_card, to_card, transfer_summ, status_failed)
+
+
+def add_transaction_to_history(all_tax, from_card, to_card, transfer_summ, status):
+    history_transactions.append(
+        {"from_card": from_card, "to_card": to_card, "transfer_sum": transfer_summ, "tax": all_tax,
+         "status": status})
 
 def get_number_card(message):
     while True:
@@ -46,3 +53,7 @@ def tax_of_transfer(transfer_summ):
     elif transfer_summ >= 10000:
         tax = transfer_summ * 0.01
     return tax
+
+def get_history_transactions():
+    for i in history_transactions:
+        print(i)

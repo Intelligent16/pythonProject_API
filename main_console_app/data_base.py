@@ -1,3 +1,5 @@
+status_success = "SUCCESS"
+status_failed = "FAILED"
 
 users = {
     "admin": "admin",
@@ -13,4 +15,9 @@ all_numbers_cards = {
    "def": {"login": "Dan", "balance": 200}
 }
 
+history_transactions = [
+    #{from_card: "", to_card: "", transfer_sum: "", "tax": "" status: ""}
 
+
+
+]

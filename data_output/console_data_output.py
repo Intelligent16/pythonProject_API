@@ -3,9 +3,7 @@ from data_input.console_data_input import get_avtoriz_data
 from Authorization import check_login, check_password, users
 from main_console_app.data_base import all_numbers_cards
 
-
 current_user_login = ""
-
 
 def avtorization():
     login, password = get_avtoriz_data()
@@ -20,14 +18,12 @@ def avtorization():
     # print("Привет,", login)
     print(f"Привет, {login}")
 
-
 def print_current_user():
     global current_user_login
     if current_user_login != "":
         print(f"Пользователь: {current_user_login}")
     else:
         print("Вы не авторизированы")
-
 
 def exit_user():
     global current_user_login
