@@ -9,10 +9,8 @@ users = {
 
 all_numbers_cards = {
    #"number": {"login": Sam, "balance": 1000}
-
-
-
-
+   "abc": {"login": "Sam", "balance": 1000},
+   "def": {"login": "Dan", "balance": 200}
 }
 
 
