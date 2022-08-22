@@ -15,19 +15,19 @@ def print_all_comands():
     print("9 - получить список транзакций")
     print("0 - завершение программы")
 
+
 def get_comand():
     while True:
         comand = input()
         if comand.isdigit():
             return int(comand)
 
+
 while True:
     print_all_comands()
     comand = get_comand()
     if comand == 4:
         exit_user()
-    elif comand == 5:
-        create_card()
     elif comand == 6:
         print_all_card_info()
     elif comand == 7:

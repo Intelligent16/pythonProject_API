@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 
 from Authorization import check_login, check_password
-from main_console_app.data_base import users, current_user
+from data_output.console_data_output import is_autorise, generate_random_number_card
+from main_console_app.data_base import users, current_user, all_numbers_cards
 
 app = FastAPI()
 
@@ -38,3 +39,15 @@ def get_current_user():
         return {"current_user_name": current_user["user_name"]}
     else:
         return {"message": "Вы не авторизированы"}
+
+
+@app.post("/create_card")
+def create_card():
+    if is_autorise():
+        number_card = generate_random_number_card()
+        # todo
+        info_card = {"login": current_user["user_name"], "balance": 0.0}
+        all_numbers_cards[number_card] = info_card
+        return {"message": "Карта создана успешно", "number_card": number_card}
+    else:
+        return {"message": "Пользоватлель не авторизован"}
