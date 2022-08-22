@@ -1,29 +1,12 @@
 import uuid
-from data_input.console_data_input import get_avtoriz_data
-from Authorization import check_login, check_password, users
+
 from main_console_app.data_base import all_numbers_cards
 
 current_user_login = ""
 
-def avtorization():
-    login, password = get_avtoriz_data()
-    if not check_login(login):
-        print("Такого пользователя не существует")
-        return
-    if not check_password(login, password):
-        print("Неверный пользователь или пароль")
-        return
-    global current_user_login
-    current_user_login = login
-    # print("Привет,", login)
-    print(f"Привет, {login}")
 
-def print_current_user():
-    global current_user_login
-    if current_user_login != "":
-        print(f"Пользователь: {current_user_login}")
-    else:
-        print("Вы не авторизированы")
+
+
 
 def exit_user():
     global current_user_login
@@ -31,17 +14,7 @@ def exit_user():
         current_user_login = ""
         return
 
-def registration():
-    print("Регистрация")
-    login, password = get_avtoriz_data()
-    if login not in users:
-        users[login] = password
-        print("Регистрация успешна")
-        global current_user_login
-        current_user_login = login
-    else:
-        print("Такой пользователь уже существует")
-        return
+
 
 def is_autorise():
     global current_user_login
