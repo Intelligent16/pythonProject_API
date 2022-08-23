@@ -51,3 +51,10 @@ def create_card():
         return {"message": "Карта создана успешно", "number_card": number_card}
     else:
         return {"message": "Пользоватлель не авторизован"}
+
+
+@app.post("/exit_user")
+def exit_user():
+    if current_user["user_name"] != "":
+        current_user["user_name"] = ""
+        return {"message": "Вы не авторизованы"}
