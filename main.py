@@ -58,3 +58,8 @@ def exit_user():
     if current_user["user_name"] != "":
         current_user["user_name"] = ""
         return {"message": "Вы не авторизованы"}
+
+
+@app.get("/all_cards_info")
+def get_all_cards_info():
+    return all_numbers_cards

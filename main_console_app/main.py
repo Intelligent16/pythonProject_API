@@ -1,5 +1,5 @@
 from data_input.console_data_input import transfer_to_card, get_history_transactions
-from data_output.console_data_output import exit_user, create_card, print_all_card_info, print_all_card_user
+from data_output.console_data_output import print_all_card_user
 
 
 def print_all_comands():
@@ -26,9 +26,7 @@ def get_comand():
 while True:
     print_all_comands()
     comand = get_comand()
-    if comand == 6:
-        print_all_card_info()
-    elif comand == 7:
+    if comand == 7:
         print_all_card_user()
     elif comand == 8:
         transfer_to_card()
