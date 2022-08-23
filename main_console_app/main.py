@@ -26,9 +26,7 @@ def get_comand():
 while True:
     print_all_comands()
     comand = get_comand()
-    if comand == 4:
-        exit_user()
-    elif comand == 6:
+    if comand == 6:
         print_all_card_info()
     elif comand == 7:
         print_all_card_user()
