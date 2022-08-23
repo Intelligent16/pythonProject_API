@@ -68,6 +68,7 @@ def get_all_cards_info():
 @app.get("/all_user_cards")
 def get_all_cards_user():
     if is_autorise():
+        # user_cards = {"user_cards": [{"number_card": dfe, "login": Sam, "balance": 1000}]}
         user_cards = {}
         for k in all_numbers_cards:
             if all_numbers_cards[k]["login"] == current_user["user_name"]:
