@@ -4,7 +4,7 @@ from main_console_app.data_base import all_numbers_cards, current_user
 
 current_user_login = ""
 
-
+# todo remove
 def exit_user():
     global current_user_login
     if current_user_login != "":
@@ -24,11 +24,6 @@ def generate_random_number_card():
         number = str(uuid.uuid4())
         if number not in all_numbers_cards:
             return number
-
-
-def print_all_card_info():
-    for k in all_numbers_cards:
-        print(k, all_numbers_cards[k])
 
 
 def print_all_card_user():
