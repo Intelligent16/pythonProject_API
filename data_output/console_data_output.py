@@ -24,11 +24,3 @@ def generate_random_number_card():
         number = str(uuid.uuid4())
         if number not in all_numbers_cards:
             return number
-
-
-def print_all_card_user():
-    if is_autorise():
-        global current_user_login
-        for k in all_numbers_cards:
-            if all_numbers_cards[k]["login"] == current_user_login:
-                print(k, all_numbers_cards[k])

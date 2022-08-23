@@ -63,3 +63,15 @@ def exit_user():
 @app.get("/all_cards_info")
 def get_all_cards_info():
     return all_numbers_cards
+
+
+@app.get("/all_user_cards")
+def get_all_cards_user():
+    if is_autorise():
+        user_cards = {}
+        for k in all_numbers_cards:
+            if all_numbers_cards[k]["login"] == current_user["user_name"]:
+                user_cards[k] = all_numbers_cards[k]
+        return user_cards
+    else:
+        return {"message": "Вы не авторизованы"}
