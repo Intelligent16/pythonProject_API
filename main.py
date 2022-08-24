@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 
 from Authorization import check_login, check_password
+from data_input.console_data_input import tax_of_transfer, add_transaction_to_history
 from data_output.console_data_output import is_autorise, generate_random_number_card
-from main_console_app.data_base import users, current_user, all_numbers_cards
+from main_console_app.data_base import users, current_user, all_numbers_cards, status_success, status_failed
 
 app = FastAPI()
 
@@ -75,3 +76,17 @@ def get_all_cards_user():
         return user_cards
     else:
         return {"message": "Вы не авторизованы"}
+
+
+@app.post("/transfer_to_card/{transfer_summ}/{from_card}/{to_card}")
+def transfer_to_card(transfer_summ: float, from_card, to_card):
+    # todo validation
+    all_tax = tax_of_transfer(transfer_summ)
+    if transfer_summ + all_tax <= all_numbers_cards[from_card]["balance"]:
+        all_numbers_cards[from_card]["balance"] = all_numbers_cards[from_card]["balance"] - transfer_summ - all_tax
+        all_numbers_cards[to_card]["balance"] = all_numbers_cards[to_card]["balance"] + transfer_summ
+        add_transaction_to_history(all_tax, from_card, to_card, transfer_summ, status_success)
+        return {"message": "Операция успешна"}
+    else:
+        add_transaction_to_history(all_tax, from_card, to_card, transfer_summ, status_failed)
+        return {"message": "Недостаточно средств"}

@@ -1,4 +1,4 @@
-from data_input.console_data_input import transfer_to_card, get_history_transactions
+from data_input.console_data_input import get_history_transactions
 
 
 def print_all_comands():
@@ -25,9 +25,7 @@ def get_comand():
 while True:
     print_all_comands()
     comand = get_comand()
-    if comand == 8:
-        transfer_to_card()
-    elif comand == 9:
+    if comand == 9:
         get_history_transactions()
     elif comand == 0:
         break
