@@ -1,3 +1,5 @@
+import sys
+
 from fastapi import FastAPI
 
 from Authorization import check_login, check_password
@@ -5,6 +7,15 @@ from data_input.console_data_input import tax_of_transfer, add_transaction_to_hi
 from data_output.console_data_output import is_autorise, generate_random_number_card
 from main_console_app.data_base import users, current_user, all_numbers_cards, status_success, status_failed
 
+import colorlog
+
+logger = colorlog.getLogger('main')
+logger.setLevel(colorlog.DEBUG)
+stream_handler = colorlog.StreamHandler(stream=sys.stdout)
+stream_handler.setFormatter(colorlog.ColoredFormatter(
+    '%(log_color)s [%(asctime)s] %(levelname)s [%(filename)s.%(funcName)s:%(lineno)d] %(message)s',
+    datefmt='%a, %d %b %Y %H:%M:%S'))
+logger.addHandler(stream_handler)
 app = FastAPI()
 
 
@@ -16,9 +27,11 @@ async def print_all_comands():
 # todo
 @app.post("/registration/{login}/{password}")
 async def registration(login, password):
+    logger.debug(f"pass: {password}, log: {login}")
     if login not in users:
         users[login] = password
         current_user["user_name"] = login
+        logger.info("OK")
         return {"message": "Регистрация успешна"}
     else:
         return {"message": "Такой пользователь уже существует"}
