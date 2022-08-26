@@ -13,7 +13,6 @@
 # _КЛЮЧ___=======ЗНАЧЕНИЕ==============
 # {login: {age: x, password: y}}
 #           к____з    к______з
-from data_input.console_data_input import get_avtoriz_data
 from main_console_app.data_base import users
 
 

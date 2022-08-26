@@ -7,7 +7,6 @@ def get_avtoriz_data():
     while login == "" or password == "":
         print("Укажите Ваш логин и пароль")
         login, password = input(), input()
-
     return login, password
 
 
@@ -45,7 +44,3 @@ def tax_of_transfer(transfer_summ):
         tax = transfer_summ * 0.01
     return tax
 
-
-def get_history_transactions():
-    for i in history_transactions:
-        print(i)
