@@ -1,21 +1,14 @@
-import sys
-
 from fastapi import FastAPI
 
 from Authorization import check_login, check_password
 from data_input.console_data_input import tax_of_transfer, add_transaction_to_history
 from data_output.console_data_output import is_autorise, generate_random_number_card
-from main_console_app.data_base import users, current_user, all_numbers_cards, status_success, status_failed
+from main_console_app.data_base import users, current_user, all_numbers_cards, status_success, status_failed, \
+    history_transactions
+from utils.logger import get_logger
 
-import colorlog
+logger = get_logger("main")
 
-logger = colorlog.getLogger('main')
-logger.setLevel(colorlog.DEBUG)
-stream_handler = colorlog.StreamHandler(stream=sys.stdout)
-stream_handler.setFormatter(colorlog.ColoredFormatter(
-    '%(log_color)s [%(asctime)s] %(levelname)s [%(filename)s.%(funcName)s:%(lineno)d] %(message)s',
-    datefmt='%a, %d %b %Y %H:%M:%S'))
-logger.addHandler(stream_handler)
 app = FastAPI()
 
 
@@ -103,3 +96,8 @@ def transfer_to_card(transfer_summ: float, from_card, to_card):
     else:
         add_transaction_to_history(all_tax, from_card, to_card, transfer_summ, status_failed)
         return {"message": "Недостаточно средств"}
+
+
+@app.get("/history_of_transactions")
+def get_history_transactions():
+    return history_transactions
