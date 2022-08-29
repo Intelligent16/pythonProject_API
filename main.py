@@ -1,10 +1,14 @@
-from fastapi import FastAPI
+from email.policy import default
+from uuid import uuid4
 
-from Authorization import check_login, check_password
+from fastapi import FastAPI, Header, Depends
+from fastapi.security import HTTPBearer
+
+from Authorization import check_login, check_password, get_login_with_token
 from data_input.console_data_input import tax_of_transfer, add_transaction_to_history
 from data_output.console_data_output import is_autorise, generate_random_number_card
-from main_console_app.data_base import users, current_user, all_numbers_cards, status_success, status_failed, \
-    history_transactions
+from main_console_app.data_base import users, all_numbers_cards, status_success, status_failed, \
+    history_transactions, users_tokens
 from utils.logger import get_logger
 
 logger = get_logger("main")
@@ -23,7 +27,6 @@ async def registration(login, password):
     logger.debug(f"pass: {password}, log: {login}")
     if login not in users:
         users[login] = password
-        current_user["user_name"] = login
         logger.info("OK")
         return {"message": "Регистрация успешна"}
     else:
@@ -36,35 +39,34 @@ async def avtorization(login, password):
         return {"message": "Такого пользователя не существует"}
     if not check_password(login, password):
         return {"message": "Неверный пользователь или пароль"}
-    current_user["user_name"] = login
-    return {"message": f"Привет, {login}"}
+    token = str(uuid4())
+    users_tokens[token] = login
+    return {"message": f"Привет, {login}", "token": token}
 
 
 @app.get("/current_user")
-def get_current_user():
-    if current_user["user_name"] != "":
-        return {"current_user_name": current_user["user_name"]}
+def get_current_user(authorization=Header(default=None)):
+    if get_login_with_token(authorization) is not None:
+        return {"current_user_name": users_tokens[authorization]}
     else:
         return {"message": "Вы не авторизированы"}
 
 
 @app.post("/create_card")
-def create_card():
-    if is_autorise():
+def create_card(authorization=Header(default=None)):
+    if is_autorise(authorization):
         number_card = generate_random_number_card()
-        # todo
-        info_card = {"login": current_user["user_name"], "balance": 0.0}
+        info_card = {"login": users_tokens[authorization], "balance": 0.0}
         all_numbers_cards[number_card] = info_card
         return {"message": "Карта создана успешно", "number_card": number_card}
     else:
         return {"message": "Пользоватлель не авторизован"}
 
 
-@app.post("/exit_user")
-def exit_user():
-    if current_user["user_name"] != "":
-        current_user["user_name"] = ""
-        return {"message": "Вы не авторизованы"}
+@app.post("/logout")
+def logout(authorization=Header(default=None)):
+    del users_tokens[authorization]
+    return {"message": "Вы вышли"}
 
 
 @app.get("/all_cards_info")
@@ -72,12 +74,13 @@ def get_all_cards_info():
     return all_numbers_cards
 
 
+# todo @app.get("/all_user_cards", dependencies=[Depends(HTTPBearer())])
 @app.get("/all_user_cards")
-def get_all_cards_user():
-    if is_autorise():
+def get_all_cards_user(authorization=Header(default=None)):
+    if is_autorise(authorization):
         user_cards = {}
         for k in all_numbers_cards:
-            if all_numbers_cards[k]["login"] == current_user["user_name"]:
+            if all_numbers_cards[k]["login"] == users_tokens[authorization]:
                 user_cards[k] = all_numbers_cards[k]
         return user_cards
     else:
@@ -87,6 +90,7 @@ def get_all_cards_user():
 @app.post("/transfer_to_card/{transfer_summ}/{from_card}/{to_card}")
 def transfer_to_card(transfer_summ: float, from_card, to_card):
     # todo validation
+    # todo is_autorise
     all_tax = tax_of_transfer(transfer_summ)
     if transfer_summ + all_tax <= all_numbers_cards[from_card]["balance"]:
         all_numbers_cards[from_card]["balance"] = all_numbers_cards[from_card]["balance"] - transfer_summ - all_tax

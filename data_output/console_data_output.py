@@ -1,13 +1,11 @@
 import uuid
 
-from main_console_app.data_base import all_numbers_cards, current_user
+from Authorization import get_login_with_token
+from main_console_app.data_base import all_numbers_cards
 
 
-def is_autorise():
-    if current_user["user_name"] != "":
-        return True
-    else:
-        return False
+def is_autorise(authorization):
+    return get_login_with_token(authorization) is not None
 
 
 def generate_random_number_card():

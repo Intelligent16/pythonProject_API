@@ -13,7 +13,7 @@
 # _КЛЮЧ___=======ЗНАЧЕНИЕ==============
 # {login: {age: x, password: y}}
 #           к____з    к______з
-from main_console_app.data_base import users
+from main_console_app.data_base import users, users_tokens
 
 
 def check_login(log):
@@ -30,10 +30,11 @@ def check_password(log, pas):
         return False
 
 
-
-
-
-
+def get_login_with_token(token):
+    if token in users_tokens:
+        return users_tokens.get(token)  # return users_tokens[token]
+    else:
+        return None
 
 # if pas in users["aws"]:
 #     pass

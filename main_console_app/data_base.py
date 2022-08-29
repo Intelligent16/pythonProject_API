@@ -1,6 +1,8 @@
 status_success = "SUCCESS"
 status_failed = "FAILED"
-current_user = {"user_name": ""}
+users_tokens = {
+
+}
 
 users = {
     "admin": "admin",
