@@ -1,14 +1,13 @@
-from email.policy import default
 from uuid import uuid4
 
-from fastapi import FastAPI, Header, Depends
-from fastapi.security import HTTPBearer
+from fastapi import FastAPI, Header
 
 from Authorization import check_login, check_password, get_login_with_token
 from data_input.console_data_input import tax_of_transfer, add_transaction_to_history
 from data_output.console_data_output import is_autorise, generate_random_number_card
 from main_console_app.data_base import users, all_numbers_cards, status_success, status_failed, \
     history_transactions, users_tokens
+from models.models import LoginUserModel, RegistrationUserModel
 from utils.logger import get_logger
 
 logger = get_logger("main")
@@ -22,26 +21,26 @@ async def print_all_comands():
 
 
 # todo
-@app.post("/registration/{login}/{password}")
-async def registration(login, password):
-    logger.debug(f"pass: {password}, log: {login}")
-    if login not in users:
-        users[login] = password
+@app.post("/registration")
+async def registration(user: RegistrationUserModel):
+    logger.debug(f"pass: {user.password}, log: {user.login}")
+    if user.login not in users:
+        users[user.login] = user.password
         logger.info("OK")
         return {"message": "Регистрация успешна"}
     else:
         return {"message": "Такой пользователь уже существует"}
 
 
-@app.post("/avtorization/{login}/{password}")
-async def avtorization(login, password):
-    if not check_login(login):
+@app.post("/avtorization")
+async def avtorization(user: LoginUserModel):
+    if not check_login(user.login):
         return {"message": "Такого пользователя не существует"}
-    if not check_password(login, password):
+    if not check_password(user.login, user.password):
         return {"message": "Неверный пользователь или пароль"}
     token = str(uuid4())
-    users_tokens[token] = login
-    return {"message": f"Привет, {login}", "token": token}
+    users_tokens[token] = user.login
+    return {"message": f"Привет, {user.login}", "token": token}
 
 
 @app.get("/current_user")
